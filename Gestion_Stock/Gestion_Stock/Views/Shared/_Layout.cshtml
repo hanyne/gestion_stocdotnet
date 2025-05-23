@@ -1,0 +1,170 @@
+﻿@using Microsoft.AspNetCore.Http
+
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Gestion Stock</title>
+    <link rel="stylesheet" href="~/css/jquery-ui.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <style>
+        a.navbar-brand {
+            white-space: normal;
+            text-align: center;
+            word-break: break-all;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        a {
+            color: #0366d6;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #1b6ec2;
+            border-color: #1861ac;
+        }
+
+        .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+            color: #fff;
+            background-color: #1b6ec2;
+            border-color: #1861ac;
+        }
+
+        html {
+            font-size: 14px;
+        }
+
+        .border-top {
+            border-top: 1px solid #e5e5e5;
+        }
+
+        .border-bottom {
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .box-shadow {
+            box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+        }
+
+        button.accept-policy {
+            font-size: 1rem;
+            line-height: inherit;
+        }
+
+        html {
+            position: relative;
+        }
+
+        body {
+            overflow: scroll;
+        }
+
+        .btn {
+            background-color: chartreuse;
+            color: #fff;
+        }
+
+            .btn:hover, .btn:focus, .btn.active {
+                background: #4b92dc;
+                color: #fff;
+                -webkit-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+                -moz-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+                -ms-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+                -o-box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+                -webkit-transition: all 250ms ease-in-out 0s;
+                -moz-transition: all 250ms ease-in-out 0s;
+                -ms-transition: all 250ms ease-in-out 0s;
+                -o-transition: all 250ms ease-in-out 0s;
+                transition: all 250ms ease-in-out 0s;
+            }
+    </style>
+    <link rel="stylesheet" href="~/css/jquery-ui.css" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Gestion Stock</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    @if (User.IsInRole(Gestion_Stock.Utility.SD.Caissier))
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="Caissier" asp-controller="Acceuil" asp-action="Index">Lancer commande <span class="sr-only">(current)</span></a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home <span class="sr-only">(current)</span></a>
+                        </li>
+                    }
+
+                    @if (User.IsInRole(Gestion_Stock.Utility.SD.Admin) || User.IsInRole(Gestion_Stock.Utility.SD.Caissier))
+                    {
+                       
+                    }
+
+                    @if (User.IsInRole(Gestion_Stock.Utility.SD.Caissier) || User.IsInRole(Gestion_Stock.Utility.SD.Admin))
+                    {
+                       
+                    }
+
+                    @if (User.IsInRole(Gestion_Stock.Utility.SD.Agent_Livraison))
+                    {
+                        <li class="nav-item">
+                            <a asp-area="Agent_Livraison" asp-controller="Agent" asp-action="OrderPickup" class="nav-link">
+                                Effectuer la livraison
+                            </a>
+                        </li>
+                    }
+
+                    @if (User.IsInRole(Gestion_Stock.Utility.SD.Caissier))
+                    {
+                        @if (HttpContextAccessor.HttpContext.Session.GetInt32(@Gestion_Stock.Utility.SD.ssShoppingCartCount) != null)
+                        {
+                            <li style="color:white">
+                                <a asp-area="Caissier" asp-controller="Cart" asp-action="Index" class="nav-link">
+                                    @{
+                                        var count = HttpContextAccessor.HttpContext.Session.GetInt32(@Gestion_Stock.Utility.SD.ssShoppingCartCount);
+                                    }
+                                    <i class="fas fa-shopping-cart"></i> &nbsp; (@count)
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li style="color:white">
+                                <a asp-area="Caissier" asp-controller="Cart" asp-action="Index" class="nav-link">
+                                    <i class="fas fa-shopping-cart"></i> &nbsp; (0)
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+                <partial name="_LoginPartial" />
+            </div>
+        </nav>
+    </header>
+
+    <div class="container-fluid">
+        <main role="main" class="pb-3 mt-2">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

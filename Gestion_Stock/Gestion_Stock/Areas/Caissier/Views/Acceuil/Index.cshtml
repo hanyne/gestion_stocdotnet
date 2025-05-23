@@ -1,0 +1,50 @@
+﻿@model Gestion_Stock.Models.ViewModels.IndexViewModel
+
+@{
+    ViewData["Title"] = "Stock Menu";
+}
+
+<div class="container my-5">
+    <h1 class="display-4">Stock Menu</h1>
+    <p class="lead">Browse all available computer hardware items.</p>
+
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.MenuItem)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Categorie.nom</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="container">
+    <h3 class="display-4 text-center mb-4">Réalisé Par:</h3>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <div class="card p-3">
+                <h5>Hanine</h5>
+                <p class="mb-0">Filière Genie Info</p>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card p-3">
+                <h5>Abir</h5>
+                <p class="mb-0">Filière Genie Info</p>
+            </div>
+        </div>
+    </div>
+</div>
